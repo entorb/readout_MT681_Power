@@ -59,12 +59,14 @@ Here is described, how to upload a Tasmota firmware and script, that provides da
 
 ### In Grafana
 
-Instead, I use some existing pieces of software on a Raspberry Pi 3b "server"
+Instead, I use some existing pieces of software on a Raspberry Pi 3b "server". See [example_code](example_code)
 
 * activate MQTT protocol in the sensor webinterface to send the data
 * Python script to receive the data via MQTT
 * InfluxDB to store the data
 * Grafana to visualize the data
+
+![Grafana](images/grafana.png "Grafana")
 
 ### In HomeAssistant
 
