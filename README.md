@@ -2,17 +2,17 @@
 
 ## Motivation
 
-After installing 2 photovoltaic modules on my balcony (check out the project documentation at <https://entorb.net/wickie/Balkonkraftwerk>), my electricity provider unfortunately replaced my old electricity meter (that rotated backwards when PV production exceeded my consumption).
+After installing 2 photovoltaic modules on my balcony (check out the [project documentation](https://entorb.net/wickie/Balkonkraftwerk)), my electricity provider unfortunately replaced my old electricity meter (that rotated backwards when PV production exceeded my consumption).
 
 As the new meter has an optic interface, I decided to try to read it out to have at least some benefit of the replacement...
 
-A great documentation (in German) on how to read out different electricity meters <https://ottelo.jimdofree.com/stromz%C3%A4hler-auslesen-tasmota/> was my starting point.
+A [great documentation](https://ottelo.jimdofree.com/stromz%C3%A4hler-auslesen-tasmota/) (in German) on how to read out different electricity meters was my starting point.
 
 ## Hardware
 
 My electricity meter is an Iskra eHZ-MT681-D4A52-K0p
 
-For the readout I bought an all-inclusive product <https://www.wispr-shop.de/produkt/wifi-ir-schreib-lesekopf-diy-set/> for 40€ at eBay. It bundles
+For the readout I bought an [all-inclusive product](https://www.wispr-shop.de/produkt/wifi-ir-schreib-lesekopf-diy-set/) for 40€ at eBay. It bundles
 
 * Hichi IR sensor
 * micro controller ESP01S (Wi-Fi and MicroUSB power connector)
@@ -36,7 +36,7 @@ Following the manual of the sensor I performed these steps
 
 ### Tasmota script for Iskra MT681-D4A52-K0p
 
-* copied from <https://tasmota.github.io/docs/Smart-Meter-Interface/#iskra-ehz-mt681-d4a52-k0p>
+* copied from [Tasmota documentation](https://tasmota.github.io/docs/Smart-Meter-Interface/#iskra-ehz-mt681-d4a52-k0p)
 * skipping/commenting out the last line of the static Meter_id
 
 ```text
@@ -55,11 +55,11 @@ Following the manual of the sensor I performed these steps
 
 ### In device webinterface
 
-Here is described, how to upload a Tasmota firmware and script, that provides data visualization on the webinterface of the device <https://ottelo.jimdofree.com/stromz%C3%A4hler-auslesen-tasmota/>. I did not try that.
+[Here](https://ottelo.jimdofree.com/stromz%C3%A4hler-auslesen-tasmota/) is described, how to upload a Tasmota firmware and script, that provides data visualization on the webinterface of the device. I did not try that.
 
 ### In Grafana
 
-Instead, I use some existing pieces of software on a Raspberry Pi 3b "server". See [example_code](example_code)
+Instead, I use some existing pieces of software on a Raspberry Pi 3b "server".
 
 * activate MQTT protocol in the sensor webinterface to send the data
 * Python script to receive the data via MQTT
@@ -68,11 +68,25 @@ Instead, I use some existing pieces of software on a Raspberry Pi 3b "server". S
 
 ![Grafana](images/grafana.png "Grafana")
 
+See [example_code](example_code) for Python example and Grafana dashboard model.
+
 ### In HomeAssistant
 
-Alternative setup could be to use HomeAssistant to receive the data via MQTT, with is also described in the documentation <https://ottelo.jimdofree.com/stromz%C3%A4hler-auslesen-tasmota/>.
+Alternative setup could be to use HomeAssistant to receive the data via MQTT, with is also described in the [HowTo](https://ottelo.jimdofree.com/stromz%C3%A4hler-auslesen-tasmota/).
+
+## Tasmota commands via MQTT
+
+see [Tasmota documentation](https://tasmota.github.io/docs/Commands/)
+
+Sending an empty message body, results in the device responding with its current value.
+
+```sh
+mosquitto_pub -u mqtt_user -P mqtt_passwd -t "cmnd/tasmota_MT681/webserver" -m ""
+```
 
 ## Power Saving
+
+### Disable webinterface
 
 After setting up the device and connecting to MQTT broker, I decided to turn off the webinterface, to hopefully reduce the power consumption. (here tasmota_MT681 is the name of my device)
 
@@ -80,18 +94,27 @@ After setting up the device and connecting to MQTT broker, I decided to turn off
 mosquitto_pub -u mqtt_user -P mqtt_passwd -t "cmnd/tasmota_MT681/webserver" -m "0"
 ```
 
-reduce sending frequency to 300s (currently I use 15s)
+### Sending frequency
+
+reduce sending frequency to every 300s (currently I use 15s)
 
 ```sh
 mosquitto_pub -u mqtt_user -P mqtt_passwd -t "cmnd/tasmota_MT681/TelePeriod" -m "300"
 ```
 
-## Tasmota commands per MQTT
+### Sleep and Dynamc Sleep
 
-see <https://tasmota.github.io/docs/Commands/>
+see [Tasmota Energy-Saving docu](https://tasmota.github.io/docs/Energy-Saving/) on Sleep vs. Dynamic Sleep
+(currently I use default Dynamic Sleep and 50ms)
 
-sending an empty message body, results in the device responding with its current value
+set longer sleep time of 200ms (default is 50)
 
 ```sh
-mosquitto_pub -u mqtt_user -P mqtt_passwd -t "cmnd/tasmota_MT681/webserver" -m ""
+mosquitto_pub -u mqtt_user -P mqtt_passwd -t "cmnd/tasmota_MT681/Sleep" -m "200"
+```
+
+Switch from Dynamic Sleep (0) to normal Sleep (1)
+
+```sh
+mosquitto_pub -u mqtt_user -P mqtt_passwd -t "cmnd/tasmota_MT681/SetOption60" -m "1"
 ```
