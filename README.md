@@ -57,6 +57,8 @@ Following the manual of the sensor I performed these steps
 
 [Here](https://ottelo.jimdofree.com/stromz%C3%A4hler-auslesen-tasmota/) is described, how to upload a Tasmota firmware and script, that provides data visualization on the webinterface of the device. I did not try that.
 
+![Tasmota](images/tasmota.png "Tasmota")
+
 ### In Grafana
 
 Instead, I use some existing pieces of software on a Raspberry Pi 3b "server".
@@ -102,7 +104,7 @@ reduce sending frequency to every 300s (currently I use 15s)
 mosquitto_pub -u mqtt_user -P mqtt_passwd -t "cmnd/tasmota_MT681/TelePeriod" -m "300"
 ```
 
-### Sleep and Dynamc Sleep
+### Sleep and Dynamic Sleep
 
 see [Tasmota Energy-Saving docu](https://tasmota.github.io/docs/Energy-Saving/) on Sleep vs. Dynamic Sleep
 (currently I use default Dynamic Sleep and 50ms)
