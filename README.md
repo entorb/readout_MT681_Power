@@ -51,6 +51,16 @@ Following the manual of the sensor I performed these steps
 ; 1,77070100000009ff@#,Service ID,,Meter_id,0|
 ```
 
+### Set timezone
+
+see [doc](https://tasmota.github.io/docs/Commands/#control)
+in webinterface open console to read and change the timezone
+`TimeZone` show current timezone
+`TimeZone 99` use timezone configured by TimeDst and TimeStd
+
+[tasmotatimezone.com](https://tasmotatimezone.com/) provides more info, in my case it suggests this command
+`Backlog Latitude 49.5928616; Longitude 11.0056; TimeDST 0,0,3,1,1,120; TimeSTD 0,0,10,1,1,60; TimeZone 99`
+
 ## Data visualization
 
 ### In device webinterface
