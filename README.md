@@ -18,7 +18,7 @@ For the readout I bought an [all-inclusive product](https://www.wispr-shop.de/pr
 * micro controller ESP01S (Wi-Fi and MicroUSB power connector)
 * pre-installed software Tasmota V13.3
 
-so no Arduino programming and no soldering ;-)
+So no Arduino programming and no soldering ;-)
 
 ## Setup
 
@@ -130,3 +130,7 @@ Switch from Dynamic Sleep (0) to normal Sleep (1)
 ```sh
 mosquitto_pub -u mqtt_user -P mqtt_passwd -t "cmnd/tasmota_MT681/SetOption60" -m "1"
 ```
+
+## Power Supply
+
+Since I had no power plug in the meter cabinet available, I used an USB power bank. Unfortunately, that one only lasted for a couple of days, despite my power saving efforts. So I installed a 5V power source [MEAN WELL HDR-15-5](https://www.meanwell-web.com/en-gb/ac-dc-ultra-slim-din-rail-power-supply-input-range-hdr--15--5) behind a new fuse in the meter cabinet.
