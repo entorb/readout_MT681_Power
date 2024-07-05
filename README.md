@@ -108,11 +108,13 @@ mosquitto_pub -u mqtt_user -P mqtt_passwd -t "cmnd/tasmota_MT681/webserver" -m "
 
 ### Sending frequency
 
-reduce sending frequency to every 300s (currently I use 15s)
+Reduce the devices sending frequency to every 300s
 
 ```sh
 mosquitto_pub -u mqtt_user -P mqtt_passwd -t "cmnd/tasmota_MT681/TelePeriod" -m "300"
 ```
+
+Since attaching the device to a power source, instead of a power bank (see below), I use 10s during the day and 30s in the night. Switching is triggered via crontab of my raspi.
 
 ### Sleep and Dynamic Sleep
 
